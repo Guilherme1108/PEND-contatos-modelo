@@ -1,6 +1,6 @@
 'use strict'
 
-import { lerContatos } from "./contatos.js"
+import { criarContato, lerContatos } from "./contatos.js"
 
 // console.log(await lerContatos())
 
@@ -45,22 +45,44 @@ async function carregarContatos() {
 
 const buttonNovoContato = document.getElementById('novo-contato')
 
-function abrirTelaCadastro() {
+function telaCadastro() {
     const main = document.querySelector('main')
 
     main.classList.remove('card-show')
     main.classList.add('form-show')
 
     document.getElementById('cancelar').addEventListener('click', fecharTelacadastro)
+    document.getElementById('salvar').addEventListener('click', cadastrarNovoContato)
 
 }
-buttonNovoContato.addEventListener('click', abrirTelaCadastro)
+buttonNovoContato.addEventListener('click', telaCadastro)
 
 function fecharTelacadastro() {
     const main = document.querySelector('main')
 
     main.classList.remove('form-show')
     main.classList.add('card-show')
+}
+
+async function cadastrarNovoContato() {
+    // const foto = document.getElementById('foto').value
+    const foto = 'https://cdn.wikimg.net/en/hkwiki/images/e/e6/B_Lace.png' //Imagem de teste
+    const nome = document.getElementById('nome').value
+    const email = document.getElementById('email').value
+    const celular = document.getElementById('celular').value
+    const endereco = document.getElementById('endereco').value
+    const cidade = document.getElementById('cidade').value
+    
+    const novoContato = { nome, celular, foto, email, endereco, cidade }
+
+    const success = await criarContato(novoContato)
+
+    if (success) {
+        alert('Contato cadsatrado com sucesso!')
+        fecharTelacadastro()
+    } else {
+        alert('Erro ao criar contato')
+    }
 }
 
 carregarContatos()
