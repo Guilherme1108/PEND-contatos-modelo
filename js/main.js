@@ -4,7 +4,7 @@ import { criarContato, lerContatos } from "./contatos.js"
 
 // console.log(await lerContatos())
 
-function criarContatos (contato) {
+function pegarContatos (contato) {
 const container = document.getElementById('container')
 
 const divCardContato = document.createElement('div')
@@ -40,7 +40,7 @@ return container
 
 async function carregarContatos() {
     const contatos = await lerContatos()
-    contatos.forEach(criarContatos)
+    contatos.forEach(pegarContatos)
 }
 
 const buttonNovoContato = document.getElementById('novo-contato')
