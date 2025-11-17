@@ -35,6 +35,10 @@ if (contato.celular) {
 container.appendChild(divCardContato)
 divCardContato.append(imagemContato, nomeContato, numeroContato)
 
+divCardContato.addEventListener('click', () => {
+  editarContato(contato)
+})
+
 return container
 }
 
@@ -51,8 +55,20 @@ function telaCadastro() {
     main.classList.remove('card-show')
     main.classList.add('form-show')
 
-    document.getElementById('cancelar').addEventListener('click', fecharTelacadastro)
-    document.getElementById('salvar').addEventListener('click', cadastrarNovoContato)
+    const btnCancelar = document.getElementById('cancelar')
+    const btnSalvar = document.getElementById('salvar')
+    const btnEditar = document.getElementById('editar')
+    const btnDeletar = document.getElementById('deletar')
+
+    btnCancelar.addEventListener('click', fecharTelacadastro)
+
+    btnSalvar.addEventListener('click', cadastrarNovoContato)
+
+    btnEditar.disabled = true
+    btnEditar.classList.add('buttonDisabled')
+
+    btnDeletar.disabled = true
+    btnDeletar.classList.add('buttonDisabled')
 
 }
 buttonNovoContato.addEventListener('click', telaCadastro)
@@ -65,8 +81,7 @@ function fecharTelacadastro() {
 }
 
 async function cadastrarNovoContato() {
-    // const foto = document.getElementById('foto').value
-    const foto = 'https://cdn.wikimg.net/en/hkwiki/images/e/e6/B_Lace.png' //Imagem de teste
+    const foto = document.getElementById('foto').value
     const nome = document.getElementById('nome').value
     const email = document.getElementById('email').value
     const celular = document.getElementById('celular').value
@@ -83,6 +98,50 @@ async function cadastrarNovoContato() {
     } else {
         alert('Erro ao criar contato')
     }
+}
+
+function editarContato(contato) {
+  const main = document.querySelector('main')
+
+  main.classList.remove('card-show')
+  main.classList.add('form-show')
+
+  const foto = document.getElementById('foto')
+  const nome = document.getElementById('nome')
+  const email = document.getElementById('email')
+  const celular = document.getElementById('celular')
+  const endereco = document.getElementById('endereco')
+  const cidade = document.getElementById('cidade')
+
+  foto.value = contato.foto || "" //Não está da maneira correta
+  nome.value = contato.nome || ""
+  email.value = contato.email || ""
+  celular.value = contato.celular || ""
+  endereco.value = contato.endereco || ""
+  cidade.value = contato.cidade || ""
+
+
+  foto.disabled = true
+  nome.disabled = true
+  email.disabled = true
+  celular.disabled = true
+  endereco.disabled = true
+  cidade.disabled = true
+    
+
+    const btnCancelar = document.getElementById('cancelar')
+    const btnSalvar = document.getElementById('salvar')
+    const btnEditar = document.getElementById('editar')
+    const btnDeletar = document.getElementById('deletar')
+
+    btnCancelar.addEventListener('click', fecharTelacadastro)
+
+    btnSalvar.addEventListener('click', cadastrarNovoContato)
+
+    // btnEditar.addEventListener('click'){
+
+    // }
+
 }
 
 carregarContatos()

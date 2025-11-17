@@ -24,7 +24,7 @@ export async function criarContato(contato) {
     return response.ok
 }
 
-async function deletarContato (id) {
+export async function deletarContato (id) {
     const url = `https://bakcend-fecaf-render.onrender.com/contatos/${id}`
 
     const options = {
