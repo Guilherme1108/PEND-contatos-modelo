@@ -4,100 +4,101 @@ import { criarContato, lerContatos } from "./contatos.js"
 
 // console.log(await lerContatos())
 
-function pegarContatos (contato) {
-const container = document.getElementById('container')
+function pegarContatos(contato) {
+  const container = document.getElementById('container')
 
-const divCardContato = document.createElement('div')
-const imagemContato = document.createElement('img')
-const nomeContato = document.createElement('h2')
-const numeroContato = document.createElement('p')
+  const divCardContato = document.createElement('div')
+  const imagemContato = document.createElement('img')
+  const nomeContato = document.createElement('h2')
+  const numeroContato = document.createElement('p')
 
-divCardContato.classList.add('card-contato')
+  divCardContato.classList.add('card-contato')
 
-imagemContato.src = contato.foto
-imagemContato.onerror = () => {
+
+  imagemContato.src = container.foto
+  imagemContato.onerror = () => {
     imagemContato.src = './img/avatar1.avif'
-}
+  }
 
-if (contato.nome) {
+  if (contato.nome) {
     nomeContato.textContent = contato.nome
   } else {
     nomeContato.textContent = 'Nome desconhecido'
   }
 
-if (contato.celular) {
+  if (contato.celular) {
     numeroContato.textContent = contato.celular
   } else {
     numeroContato.textContent = 'Numero desconhecido'
   }
-  
 
-container.appendChild(divCardContato)
-divCardContato.append(imagemContato, nomeContato, numeroContato)
 
-divCardContato.addEventListener('click', () => {
-  editarContato(contato)
-})
+  container.appendChild(divCardContato)
+  divCardContato.append(imagemContato, nomeContato, numeroContato)
 
-return container
+  divCardContato.addEventListener('click', () => {
+    editarContato(contato)
+  })
+
+  return container
 }
 
 async function carregarContatos() {
-    const contatos = await lerContatos()
-    contatos.forEach(pegarContatos)
+  const contatos = await lerContatos()
+  contatos.forEach(pegarContatos)
 }
 
 const buttonNovoContato = document.getElementById('novo-contato')
 
 function telaCadastro() {
-    const main = document.querySelector('main')
+  const main = document.querySelector('main')
 
-    main.classList.remove('card-show')
-    main.classList.add('form-show')
+  main.classList.remove('card-show')
+  main.classList.add('form-show')
 
-    const btnCancelar = document.getElementById('cancelar')
-    const btnSalvar = document.getElementById('salvar')
-    const btnEditar = document.getElementById('editar')
-    const btnDeletar = document.getElementById('deletar')
+  const btnCancelar = document.getElementById('cancelar')
+  const btnSalvar = document.getElementById('salvar')
+  const btnEditar = document.getElementById('editar')
+  const btnDeletar = document.getElementById('deletar')
 
-    btnCancelar.addEventListener('click', fecharTelacadastro)
+  btnCancelar.addEventListener('click', fecharTelacadastro)
 
-    btnSalvar.addEventListener('click', cadastrarNovoContato)
+  btnSalvar.addEventListener('click', cadastrarNovoContato)
 
-    btnEditar.disabled = true
-    btnEditar.classList.add('buttonDisabled')
+  btnEditar.disabled = true
+  btnEditar.classList.add('buttonDisabled')
 
-    btnDeletar.disabled = true
-    btnDeletar.classList.add('buttonDisabled')
+  btnDeletar.disabled = true
+  btnDeletar.classList.add('buttonDisabled')
 
 }
 buttonNovoContato.addEventListener('click', telaCadastro)
 
 function fecharTelacadastro() {
-    const main = document.querySelector('main')
+  const main = document.querySelector('main')
 
-    main.classList.remove('form-show')
-    main.classList.add('card-show')
+  main.classList.remove('form-show')
+  main.classList.add('card-show')
 }
 
 async function cadastrarNovoContato() {
-    const foto = document.getElementById('foto').value
-    const nome = document.getElementById('nome').value
-    const email = document.getElementById('email').value
-    const celular = document.getElementById('celular').value
-    const endereco = document.getElementById('endereco').value
-    const cidade = document.getElementById('cidade').value
-    
-    const novoContato = { nome, celular, foto, email, endereco, cidade }
+  const foto = document.getElementById('foto').value
+  const nome = document.getElementById('nome').value
+  const email = document.getElementById('email').value
+  const celular = document.getElementById('celular').value
+  const endereco = document.getElementById('endereco').value
+  const cidade = document.getElementById('cidade').value
 
-    const success = await criarContato(novoContato)
+  const novoContato = { nome, celular, foto, email, endereco, cidade }
 
-    if (success) {
-        alert('Contato cadsatrado com sucesso!')
-        fecharTelacadastro()
-    } else {
-        alert('Erro ao criar contato')
-    }
+  const success = await criarContato(novoContato)
+
+  if (success) {
+    alert('Contato cadsatrado com sucesso!')
+    fecharTelacadastro()
+  } else {
+    alert('Erro ao criar contato')
+  }
 }
 
 function editarContato(contato) {
@@ -127,20 +128,27 @@ function editarContato(contato) {
   celular.disabled = true
   endereco.disabled = true
   cidade.disabled = true
-    
 
-    const btnCancelar = document.getElementById('cancelar')
-    const btnSalvar = document.getElementById('salvar')
-    const btnEditar = document.getElementById('editar')
-    const btnDeletar = document.getElementById('deletar')
 
-    btnCancelar.addEventListener('click', fecharTelacadastro)
+  const btnCancelar = document.getElementById('cancelar')
+  const btnSalvar = document.getElementById('salvar')
+  const btnEditar = document.getElementById('editar')
+  const btnDeletar = document.getElementById('deletar')
 
-    btnSalvar.addEventListener('click', cadastrarNovoContato)
+  btnCancelar.addEventListener('click', fecharTelacadastro)
 
-    // btnEditar.addEventListener('click'){
+  btnSalvar.addEventListener('click', cadastrarNovoContato)
+  btnSalvar.disabled = true
+  btnSalvar.classList.add('buttonDisabled')
 
-    // }
+  btnEditar.addEventListener('click', () => {
+    foto.disabled = false
+    nome.disabled = false
+    email.disabled = false
+    celular.disabled = false
+    endereco.disabled = false
+    cidade.disabled = false
+  })
 
 }
 
