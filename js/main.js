@@ -1,6 +1,6 @@
 'use strict'
 
-import { criarContato, lerContatos } from "./contatos.js"
+import { atualizarContato, criarContato, deletarContato, lerContatos } from "./contatos.js"
 
 // console.log(await lerContatos())
 
@@ -15,7 +15,7 @@ function pegarContatos(contato) {
   divCardContato.classList.add('card-contato')
 
 
-  imagemContato.src = container.foto
+  imagemContato.src = contato.foto
   imagemContato.onerror = () => {
     imagemContato.src = './img/avatar1.avif'
   }
@@ -36,9 +36,9 @@ function pegarContatos(contato) {
   container.appendChild(divCardContato)
   divCardContato.append(imagemContato, nomeContato, numeroContato)
 
-  divCardContato.addEventListener('click', () => {
+  divCardContato.onclick = () => {
     editarContato(contato)
-  })
+  }
 
   return container
 }
@@ -61,9 +61,9 @@ function telaCadastro() {
   const btnEditar = document.getElementById('editar')
   const btnDeletar = document.getElementById('deletar')
 
-  btnCancelar.addEventListener('click', fecharTelacadastro)
+  btnCancelar.onclick = fecharTelacadastro
 
-  btnSalvar.addEventListener('click', cadastrarNovoContato)
+  btnSalvar.onclick = cadastrarNovoContato
 
   btnEditar.disabled = true
   btnEditar.classList.add('buttonDisabled')
@@ -71,8 +71,20 @@ function telaCadastro() {
   btnDeletar.disabled = true
   btnDeletar.classList.add('buttonDisabled')
 
+  //Preview da foto
+  const input = document.getElementById("foto");
+  const preview = document.getElementById("preview-image");
+
+  input.addEventListener("change", function () {
+    const foto = this.files[0];
+
+    if (foto) {
+      preview.src = URL.createObjectURL(foto);
+    }
+  });
+
 }
-buttonNovoContato.addEventListener('click', telaCadastro)
+buttonNovoContato.onclick = telaCadastro
 
 function fecharTelacadastro() {
   const main = document.querySelector('main')
@@ -96,6 +108,7 @@ async function cadastrarNovoContato() {
   if (success) {
     alert('Contato cadsatrado com sucesso!')
     fecharTelacadastro()
+    location.reload()
   } else {
     alert('Erro ao criar contato')
   }
@@ -113,6 +126,8 @@ function editarContato(contato) {
   const celular = document.getElementById('celular')
   const endereco = document.getElementById('endereco')
   const cidade = document.getElementById('cidade')
+
+  const contatoId = contato.id
 
   foto.value = contato.foto || "" //Não está da maneira correta
   nome.value = contato.nome || ""
@@ -135,21 +150,57 @@ function editarContato(contato) {
   const btnEditar = document.getElementById('editar')
   const btnDeletar = document.getElementById('deletar')
 
-  btnCancelar.addEventListener('click', fecharTelacadastro)
+  btnCancelar.onclick = fecharTelacadastro
 
-  btnSalvar.addEventListener('click', cadastrarNovoContato)
+  btnSalvar.onclick = null
   btnSalvar.disabled = true
   btnSalvar.classList.add('buttonDisabled')
 
-  btnEditar.addEventListener('click', () => {
+  btnEditar.onclick = () => {
     foto.disabled = false
     nome.disabled = false
     email.disabled = false
     celular.disabled = false
     endereco.disabled = false
     cidade.disabled = false
-  })
 
+    // Quando clicar em editar, o botão salvar atualiza o contato
+    btnSalvar.disabled = false
+    btnSalvar.classList.remove('buttonDisabled')
+
+    btnSalvar.onclick = async () => {
+      const contatoAtualizado = {
+        foto: foto.value,
+        nome: nome.value,
+        email: email.value,
+        celular: celular.value,
+        endereco: endereco.value,
+        cidade: cidade.value,
+      }
+
+      const atualizar = await atualizarContato(contatoId, contatoAtualizado)
+
+      if (atualizar) {
+        alert("Contato atualizado!")
+        fecharTelacadastro()
+        location.reload()
+      } else {
+        alert("Erro ao atualizar")
+      }
+    }
+  }
+
+  //Excluindo
+  btnDeletar.onclick = async () => {
+    const deletado = await deletarContato(contatoId)
+
+    if (deletado) {
+      alert("Contato deletado!")
+      location.reload()
+    } else {
+      alert("Erro ao deletar")
+    }
+  }
 }
 
 carregarContatos()

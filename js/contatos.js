@@ -36,7 +36,10 @@ export async function deletarContato (id) {
     return response.ok
 }
 
-async function atualizarContato(id, contato) {
+export async function atualizarContato(id, contato) {
+    console.log('chegou')
+    console.log(id)
+    console.log(contato)
 
     const url = `https://bakcend-fecaf-render.onrender.com/contatos/${id}`
 
@@ -54,15 +57,3 @@ async function atualizarContato(id, contato) {
     return response.ok
     
 }
-
-const novoContato = {
-    "nome": "Guilherme Moreira",
-    "celular": "11 9 4002-8922",
-    "foto": "semFoto.png",
-    "email": "guilherme.moreira@gmail.com",
-    "endereco": "Av. Estrada bela, 333",
-    "cidade": "Jandira"
-}
-
-criarContato()
-// lerContatos()
