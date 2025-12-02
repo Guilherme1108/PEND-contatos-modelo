@@ -129,7 +129,7 @@ function editarContato(contato) {
 
   const contatoId = contato.id
 
-  foto.value = contato.foto || "" //Não está da maneira correta
+  foto.value = "" //Não está da maneira correta
   nome.value = contato.nome || ""
   email.value = contato.email || ""
   celular.value = contato.celular || ""
@@ -170,7 +170,7 @@ function editarContato(contato) {
 
     btnSalvar.onclick = async () => {
       const contatoAtualizado = {
-        foto: foto.value,
+        foto: '',
         nome: nome.value,
         email: email.value,
         celular: celular.value,
